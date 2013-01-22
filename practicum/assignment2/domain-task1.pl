@@ -38,10 +38,8 @@ poss( push(Box, Y, Z), S ) :-
  agentAt(X, S),
  connected(X, Y, D),
  blockAt(Box, Y, S),
- 
  connected(Y, Z, D),
-
-  clear(Z,S).
+ clear(Z,S).
 
   
 % --- Successor state axioms ------------------------------------------
