@@ -1,4 +1,4 @@
-:- ['instance-task1'].
+
 % -------------= Simple planner for situation calculus =---------------
 %
 % Executes an iterative deepening search, by default limited to a depth

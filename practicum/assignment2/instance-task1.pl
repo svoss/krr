@@ -1,25 +1,30 @@
 % ------------------------- Problem Instance --------------------------
 % This file is a template for a problem instance: the definition of an
 % initial state and of a goal. 
-
-% debug(on).	% need additional debug information at runtime?
+	% need additional debug information at runtime?
 
 
 % --- Load domain definitions from an external file -------------------
+
+:- [planner].
 :- ['domain-task1'].		% Replace with the domain for this problem
 
 
 % --- Definition of the initial state ---------------------------------
 
 % position of the agent.
-agentAt(loc3x2,s0).
+agentAt(loc3x3,s0).
 
 % position of the crates.
-blockAt(a,loc2x3,s0).
-blockAt(b,loc2x2,s0).
-blockAt(c,loc2x1,s0).
+blockAt(a,loc2x2,s0).
+blockAt(b,loc2x3,s0).
+blockAt(c,loc2x4,s0).
 
-clear(X,S) :- not(blockAt(_,X,S)).
+clear(loc1x1,s0).
+clear(loc2x1,s0).
+clear(loc3x2,s0).
+clear(loc3x3,s0).
+clear(loc3x4,s0).
 
 % all the connections between the locations: connection(a,b,direction).
 
@@ -56,9 +61,9 @@ connected(loc3x4,loc2x4,w).
 
 % --- Goal condition that the planner will try to reach ---------------
 
-goal(S) :- blockAt(a,loc1x2,S), blockAt(b,loc1x3,S), blockAt(c,loc1x1,S).					% fill in the goal definition
-
-%goal(S) :- blockAt(a,loc1x3,S).
+goal(S) :- blockAt(a,loc1x3,S), blockAt(b,loc1x2,S), blockAt(c,loc1x4,S).					% fill in the goal definition
+%goal(S) :- blockAt(c,loc1x4,S), blockAt(a,loc1x2,S).
+%goal(S) :- blockAt(a,loc1x2,S).
 
 
 % ---------------------------------------------------------------------

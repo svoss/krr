@@ -11,7 +11,7 @@
 %
 % :- multifile name/#, name/#, name/#, ...
 
-:- multifile agentAt/2, blockAt/3, clear/2.
+:- multifile agentAt/2, blockAt/3. %clear/2.
 
 
 % --- Primitive control actions ---------------------------------------
@@ -30,17 +30,18 @@ primitive_action( push(_,_,_) ).
 
 % de preconditions.
 poss( move(X, Y), S ) :-
- agentAt(X, S),
  connected(X,Y,_),
- clear(Y,S).
+ not(blockAt(_,Y,S)),
+ agentAt(X,S).
+ 
+ 
  
 poss( push(Box, Y, Z), S ) :-
- agentAt(X, S),
- connected(X, Y, D),
- blockAt(Box, Y, S),
  connected(Y, Z, D),
- clear(Z,S).
-
+ connected(X, Y, D),
+ blockAt(Box,Y,S),
+ not(blockAt(_,Z,S)),
+ agentAt(X, S).
   
 % --- Successor state axioms ------------------------------------------
 % describe the value of fluent based on the previous situation and the
@@ -50,17 +51,18 @@ poss( push(Box, Y, Z), S ) :-
 
 
 agentAt(Y, result(A, S)) :-
-	A = move(_, Y) ; %agent moves via move action
 	A = push(_,Y,_); %agent moves via pus action
+	A = move(_, Y) ; %agent moves via move action
+	
 	agentAt(Y, S), not(A = move(Y,_) ; A = push(_,_,_)). % agent already is there
 	
 blockAt(Box, Loc, result(A, S)) :-
-	A = push(Box,_, Loc);
+	A = push(Box,_, Loc),not(blockAt(Box, Loc, S));
 	blockAt(Box, Loc, S) , not(A=push(Box,Loc,_)).
 	
-clear(Loc, result(A,S)) :-
-	A = push(_,Loc,_);
-	clear(Loc,S), not(A=push(_,_,Loc)).
+%clear(Loc, result(A,S)) :-
+%	A = push(_,Loc,_), not(blockAt(Loc,S));
+%	 not(A=push(_,_,Loc)), blockAt(Loc,S).
 
 
 % ---------------------------------------------------------------------
