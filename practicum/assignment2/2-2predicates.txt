@@ -1,0 +1,57 @@
+% begin state:
+at(agent, loc3-2).
+at(a, loc2-3).
+at(b, loc2-2).
+at(c, loc2-1).
+at(empty, loc1-1).
+at(empty, loc1-2).
+at(empty, loc1-3).
+at(empty, loc1-4).
+at(empty, loc2-4).
+at(empty, loc3-1).
+at(empty, loc3-3).
+connected(loc1-1, n, loc1-2).
+connected(loc1-1, e, loc2-1).
+connected(loc1-2, n, loc1-3).
+connected(loc1-2, e, loc2-2).
+connected(loc1-2, s, loc1-1).
+connected(loc1-3, n, loc1-4).
+connected(loc1-3, e, loc2-3).
+connected(loc1-3, s, loc1-2).
+connected(loc1-4, e, loc2-4).
+connected(loc1-4, s, loc1-3).
+connected(loc2-1, w, loc1-1).
+connected(loc2-1, n, loc2-2).
+connected(loc2-1, e, loc3-1).
+connected(loc2-2, n, loc2-3).
+connected(loc2-2, e, loc3-2).
+connected(loc2-2, s, loc2-1).
+connected(loc2-2, w, loc1-2).
+connected(loc2-3, n, loc2-4).
+connected(loc2-3, e, loc3-3).
+connected(loc2-3, s, loc2-2).
+connected(loc2-3, w, loc1-3).
+connected(loc3-4, s, loc2-3).
+connected(loc3-4, w, loc1-4).
+connected(loc3-1, n, loc3-2).
+connected(loc3-1, w, loc2-1).
+connected(loc3-2, n, loc3-3).
+connected(loc3-2, s, loc3-1).
+connected(loc3-2, w, loc2-2).
+connected(loc3-3, s, loc3-2).
+connected(loc3-3, w, loc2-3).
+
+% goal state:
+at(a, loc1-2).
+at(b, loc1-3).
+at(c, loc1-1).
+
+move(A,D) /\ at(A,X) /\ connected(X,D,Y) /\ at(empty,Y) -> at(A,Y) /\ at(empty,X)
+
+push(A,D) /\ at(A,X) /\ connected(X,D,Y) /\ at(C,Y) /\ connected (Y,D,Z) /\ at(empty,Z) -> at(C,Z) /\ at (A,Y) /\ at(empty,X)
+
+poss(move(a,y), s) \iff at(a,x,s) \wedge connected(x,d,y,s) \wedge at(empty,y,s)
+
+preconditions:
+
+poss(move(a,d), s) :- at(A,X,s) /\ connected(X,D,Y,s) /\ at(empty,Y,s)

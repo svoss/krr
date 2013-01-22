@@ -1,0 +1,65 @@
+prob earthquake:0.00027.
+prob burglar:0.00027.
+
+% P(Alarm | Burglar):
+alarm <- burglar & alarmWhenBurglar.
+prob alarmWhenBurglar:0.95.
+alarm <- ~burglar & alarmWhenNoBurglar.
+prob alarmWhenNoBurglar:0.0.
+
+% P(Alarm | Earthquake):
+alarm <- earthquake & alarmWhenEarthquake.
+prob alarmWhenEarthquake:0.2.
+alarm <- ~earthquake & alarmWhenNoEarthquake.
+prob alarmWhenNoEarthquake:0.0.
+
+% P (Newsbroadcast | Earthquake)
+newsbroadcast <- earthquake & newsBroadCastWhenEarthquake.
+prob newsBroadCastWhenEarthquake: 0.9998.
+newsbroadcast <- ~earthquake & newsBroadCastWhenNoEarthquake.
+prob newsBroadCastWhenNoEarthquake: 0.0002.
+
+% P(Watson | Alarm):
+callwatson <- alarm & callFromWatsonWhenAlarm.
+prob callFromWatsonWhenAlarm:0.8.
+callwatson <- ~alarm & callFromWatsonWhenNoAlarm.
+prob callFromWatsonWhenNoAlarm:0.4.
+
+% P(Gibbons | Alarm):
+callgibbons <- alarm & callFromGibbonsWhenAlarm.
+prob callFromGibbonsWhenAlarm:0.01.
+callgibbons <- ~alarm & callFromGibbonsWhenNoAlarm.
+prob callFromGibbonsWhenNoAlarm:0.04.
+
+%Assignment 1.6
+isBurglar(joe).
+isBurglar(william).
+isBurglar(jack).
+isBurglar(averall).
+
+needs(joe,[]).
+needs(william,[]).
+needs(jack,[joe]).
+needs(averall,[jack,william]).
+
+%P(WantsToGo(X))= 5/7
+prob wantsToGo(joe): 0.714285714.
+prob wantsToGo(william): 0.714285714.
+prob wantsToGo(jack): 0.714285714. 
+prob wantsToGo(averall): 0.714285714.
+
+isBurglarGroup([]).
+isBurglarGroup([X|REST]) <- wantsToGo(X) & isBurglarGroup(REST).
+
+groupWillGo(Group) <- isBurglarGroup(Group) & validGroup(Group,Group) & atLeastTwo(Group).
+
+atLeastTwo([X|[Y|REST]]).
+
+member(Element,[Element|_]).
+member(Element,[_|Tail]) <- member(Element,Tail).
+
+subset([A|X],Y) <- member(A,Y) & subset(X,Y).
+subset([],Y). 
+
+validGroup([],Group).
+validGroup([X|REST],Group) <- needs(X,REQ) & subset(REQ,Group) & validGroup(REST,Group).

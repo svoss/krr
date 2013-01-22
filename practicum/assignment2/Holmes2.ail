@@ -1,0 +1,61 @@
+prob earthquake:0.00027.
+% prob burglar:0.00027.
+prob joe:0.71428.
+prob william:0.71428.
+
+% P(Alarm | Burglar):
+alarm <- burglar & alarmWhenBurglar.
+prob alarmWhenBurglar:0.95.
+alarm <- ~burglar & alarmWhenNoBurglar.
+prob alarmWhenNoBurglar:0.0.
+
+% P(Alarm | Earthquake):
+alarm <- earthquake & alarmWhenEarthquake.
+prob alarmWhenEarthquake:0.2.
+alarm <- ~earthquake & alarmWhenNoEarthquake.
+prob alarmWhenNoEarthquake:0.0.
+
+% P (Newsbroadcast | Earthquake)
+newsbroadcast <- earthquake & newsBroadCastWhenEarthquake.
+prob newsBroadCastWhenEarthquake: 0.9998.
+newsbroadcast <- ~earthquake & newsBroadCastWhenNoEarthquake.
+prob newsBroadCastWhenNoEarthquake: 0.0002.
+
+% P(Watson | Alarm):
+callwatson <- alarm & callFromWatsonWhenAlarm.
+prob callFromWatsonWhenAlarm:0.8.
+callwatson <- ~alarm & callFromWatsonWhenNoAlarm.
+prob callFromWatsonWhenNoAlarm:0.4.
+
+% P(Gibbons | Alarm):
+callgibbons <- alarm & callFromGibbonsWhenAlarm.
+prob callFromGibbonsWhenAlarm:0.01.
+callgibbons <- ~alarm & callFromGibbonsWhenNoAlarm.
+prob callFromGibbonsWhenNoAlarm:0.04.
+
+% P(Jack | Joe):
+jack <- joe & jackIfJoe.
+prob jackIfJoe:0.71428.
+jack <- ~joe & jackIfNotJoe.
+prob jackIfNotJoe:0.0.
+
+% P(Averall | Jack, William):
+averall <- jack & william & averallIfJackAndWilliam.
+prob averallIfJackAndWilliam:0.71428.
+averall <- ~jack & william & averallIfNoJackAndWilliam.
+averall <- jack & ~william & averallIfNoJackAndWilliam.
+averall <- ~jack & ~william & averallIfNoJackAndWilliam.
+prob averallIfNoJackAndWilliam:0.0.
+
+% P(work | Joe, William, Jack, Averall):
+work <- joe & william & jack & averall.
+work <- averall & jack & william & ~joe.
+work <- joe & william & jack & ~averall.
+work <- william & joe & ~jack & ~averall.
+work <- jack & joe & ~william & ~averall.
+
+% P(burglar | work):
+burglar <- work & mrholmeshouse.
+prob mrholmeshouse:0.0003.
+burglar <- work & mrholmeshouseWhenNoWork.
+mrholmeshouseWhenNoWork:0.0.
